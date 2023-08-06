@@ -20,7 +20,7 @@ HTTP_SERVER.use(bodyParser.urlencoded({ extended: false }));
 require("./Database/dbConfig");
 
 // BASIC SERVER CONFIGS
-const PORT = 5000;
+const PORT = 4000;
 
 HTTP_SERVER.listen(PORT, "0.0.0.0", (err) => {
   if (err) throw err;
