@@ -9,7 +9,7 @@ const bodyParser = require("body-parser");
 require('dotenv').config();
 //console.log(process.env);
 // CONFIGURING CORS
-// HTTP_SERVER.use(cors());
+HTTP_SERVER.use(cors());
 
 // CONFIGURING BODY-PARSER
 HTTP_SERVER.use(bodyParser.json());
