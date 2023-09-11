@@ -3,14 +3,13 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const mongoose=require('mongoose')
-const saltRounds = 10;
-//const AuthRouter = express.Router();
+const salt = 10;
 const AuthRouter = require('express').Router();
 const UserModel = require('../Models/Users.model');
 const JWT_SECRET = 'your-secret-key'; // Replace with a secure and private key
 
-// Sign In User
-AuthRouter.post('/signin', async (req, res) => {
+// Login In User
+AuthRouter.post('/login', async (req, res) => {
   const { email, password } = req.body;
   
   try {
@@ -20,7 +19,7 @@ AuthRouter.post('/signin', async (req, res) => {
       const passwordMatch = await bcrypt.compare(password, user.password);
 
       if (passwordMatch) {
-        res.send({ message: 'login success', user: user });
+        res.send({ message: 'login in successfull', user: user });
       } else {
         res.send({ message: 'wrong credentials' });
       }
@@ -34,15 +33,15 @@ AuthRouter.post('/signin', async (req, res) => {
 });
 
 // Register User
-AuthRouter.post('/signup', async (req, res) => {
-  const { name, email, password } = req.body;
+AuthRouter.post('/register', async (req, res) => {
+  const { username, email, password } = req.body;
   try {
     const user = await UserModel.findOne({ email: email });
     if (user) {
       res.send({ message: 'User already exists' });
     } else {
       const hashedPassword = await bcrypt.hash(password, 10);
-      const newUser = new UserModel({ name, email, password: hashedPassword });
+      const newUser = new UserModel({ username, email, password: hashedPassword });
       await newUser.save();
       res.send({ message: 'Successfully registered' });
     }
@@ -102,10 +101,10 @@ AuthRouter.post('/forgot-password', async (req, res) => {
 
 AuthRouter.post('/reset-password', async (req, res) => {
   const { id, token } = req.query;
-//console.log(id)
+
   try {
     const user = await UserModel.findOne({ _id: new mongoose.Types.ObjectId(id) });
-    // console.log(user)
+
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -121,14 +120,18 @@ AuthRouter.post('/reset-password', async (req, res) => {
 
       const { password } = req.body;
 
-      // if (!password) {
-      //   return res.status(400).json({ message: 'Password is required' });
-      // }
+      // Check if a new password was provided
+      if (password) {
+        // Hash and update the password
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(password, salt, (err, hash) => {
+            if (err) throw (err);
 
-      const hashedPassword = await bcrypt.hash(password, 10);
-
-      user.password = hashedPassword;
-      await user.save();
+            user.password = hash;
+            user.save();
+          });
+        });
+      }
 
       res.json({ message: 'Password reset successfully' });
     });

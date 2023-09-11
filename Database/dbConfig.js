@@ -1,11 +1,8 @@
 const mongoose = require("mongoose");
-// const BASE_URL = process.env.NODE_ENVIRONMENT === "development" 
-// ? `mongodb://localhost:27017/${process.env.DEVELOPMENT_MONGO_DB_NAME}`
-// :`mongodb+srv://${process.env.PRODUCTION_MONGO_DB_USER_NAME}:${process.env.PRODUCTION_MONGO_DB_PASSWORD}@email.kfyhq5b.mongodb.net/${process.env.PRODUCTION_MONGO_DB_NAME}`;
 
 const BASE_URL = process.env.NODE_ENVIRONMENT === "development" 
   ? `mongodb://127.0.0.1:27017/${process.env.DEVELOPMENT_MONGO_DB_NAME}`
-  : `mongodb+srv://${process.env.PRODUCTION_MONGO_DB_USER_NAME}:${process.env.PRODUCTION_MONGO_DB_PASSWORD}@email.kfyhq5b.mongodb.net/${process.env.PRODUCTION_MONGO_DB_NAME}`;
+  : `mongodb+srv://${process.env.PRODUCTION_MONGO_DB_USER_NAME}:${process.env.PRODUCTION_MONGO_DB_PASSWORD}@stackoverflow.e3ypbcy.mongodb.net/${process.env.PRODUCTION_MONGO_DB_NAME}`;
 
 
 mongoose

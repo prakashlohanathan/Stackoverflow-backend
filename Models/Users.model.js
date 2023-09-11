@@ -1,22 +1,19 @@
-const mongoose = require("mongoose");
-const { Schema } = mongoose;
+const mongoose = require('mongoose');
 
-// CREATING MONGOOSE SCHEMA
-// SCHEMA IS THE BLIUE PRINT OF THE DATA THAT WE NEED TO STORE
-const UserSchema = new Schema({
+const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+  },
   email: {
     type: String,
-    required: true,
+    unique: true,
+    lowercase: true
   },
-
   password: {
     type: String,
-    required: true,
-  }
-
+  },
 });
 
-// const User = mongoose.model("users", UserSchema);
-// module.exports = User;
+const User = mongoose.model('User', userSchema);
 
- module.exports = mongoose.model("users", UserSchema);
+module.exports = User;
